@@ -182,84 +182,15 @@ jobs:
       - build_windows
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifact (Docker-archlinux)
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Docker-archlinux
-          path: build-Docker-archlinux
+          path: artifacts
+          pattern: build-*
+          merge-multiple: true
 
-      - name: Download build artifact (Docker-debian-bookworm)
-        uses: actions/download-artifact@v4
-        with:
-          name: Docker-debian-bookworm
-          path: build-Docker-debian-bookworm
-
-      - name: Download build artifact (Docker-ubuntu-22.04)
-        uses: actions/download-artifact@v4
-        with:
-          name: Docker-ubuntu-22.04
-          path: build-Docker-ubuntu-22.04
-
-      - name: Download build artifact (Docker-ubuntu-24.04)
-        uses: actions/download-artifact@v4
-        with:
-          name: Docker-ubuntu-24.04
-          path: build-Docker-ubuntu-24.04
-
-      - name: Download build artifact (Homebrew)
-        uses: actions/download-artifact@v4
-        with:
-          name: build-Homebrew
-          path: build-Homebrew
-
-      - name: Download build artifact (Linux-AppImage)
-        uses: actions/download-artifact@v4
-        with:
-          name: build-Linux-AppImage
-          path: build-Linux-AppImage
-
-      - name: Download build artifact (Linux-Flatpak-x86_64)
-        uses: actions/download-artifact@v4
-        with:
-          name: build-Linux-Flatpak-x86_64
-          path: build-Linux-Flatpak-x86_64
-
-      - name: Download build artifact (Linux-Flatpak-aarch64)
-        uses: actions/download-artifact@v4
-        with:
-          name: build-Linux-Flatpak-aarch64
-          path: build-Linux-Flatpak-aarch64
-      - name: Download build artifact (Windows-AMD64)
-        uses: actions/download-artifact@v4
-        with:
-          name: build-Windows-AMD64
-          path: build-Windows-AMD64
-
-      - name: Prepare artifacts
-        run: |
-          artifact_dirs=(
-            build-Docker-archlinux
-            build-Docker-debian-bookworm
-            build-Docker-ubuntu-22.04
-            build-Docker-ubuntu-24.04
-            build-Homebrew
-            build-Linux-AppImage
-            build-Linux-Flatpak-x86_64
-            build-Linux-Flatpak-aarch64
-            build-Windows-AMD64
-          )
-
-          echo "::group::Moving artifacts"
-          mkdir -p artifacts
-          for dir in "${artifact_dirs[@]}"; do
-            echo "moving artifacts from $dir"
-            mv -f "$dir"/* artifacts/
-          done
-          echo "::endgroup::"
-
-          echo "::group::Debug artifacts"
-          ls -l artifacts
-          echo "::endgroup::"
+      - name: Debug artifacts
+        run: ls -l artifacts
 
       - name: Create/Update GitHub Release
         # TODO
