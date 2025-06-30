@@ -59,8 +59,15 @@ COPY --link --from=sunshine-build /build/sunshine/build/cpack_artifacts/Sunshine
 
 FROM sunshine-base AS sunshine
 
+ARG BASE
+ARG TAG
+ARG TARGETARCH
+
+# artifacts to be extracted in CI
+COPY --link --from=sunshine-build /build/sunshine/build/cpack_artifacts/Sunshine.deb /artifacts/sunshine-${BASE}-${TAG}-${TARGETARCH}.deb
+
 # copy deb from builder
-COPY --link --from=artifacts /sunshine*.deb /sunshine.deb
+COPY --link --from=sunshine-build /build/sunshine/build/cpack_artifacts/Sunshine.deb /sunshine.deb
 
 # install sunshine
 RUN <<_INSTALL_SUNSHINE

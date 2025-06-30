@@ -25,7 +25,7 @@ jobs:
       matrix:
         include:
           - name: Windows-AMD64
-            os: windows-2019
+            os: windows-2022
             arch: x86_64
             msystem: ucrt64
             toolchain: ucrt-x86_64
