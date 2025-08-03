@@ -34,7 +34,6 @@
 #include "process.h"
 #include "utility.h"
 #include "uuid.h"
-#include "version.h"
 
 using namespace std::literals;
 
@@ -693,9 +692,8 @@ namespace confighttp {
    * @api_examples{/api/apps/9999| DELETE| null}
    */
   void deleteApp(resp_https_t response, req_https_t request) {
-    if (!check_content_type(response, request, "application/json")) {
-      return;
-    }
+    // Skip check_content_type() for this endpoint since the request body is not used.
+
     if (!authenticate(response, request)) {
       return;
     }
@@ -843,7 +841,7 @@ namespace confighttp {
     nlohmann::json output_tree;
     output_tree["status"] = true;
     output_tree["platform"] = SUNSHINE_PLATFORM;
-    output_tree["version"] = PROJECT_VER;
+    output_tree["version"] = PROJECT_VERSION;
 
     auto vars = config::parse_config(file_handler::read_file(config::sunshine.config_file.c_str()));
 
